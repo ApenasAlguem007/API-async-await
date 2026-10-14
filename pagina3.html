@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Listar Usuarios</title>
+</head>
+<body>
+
+    <h1>Lista de Usuarios</h1>
+
+    <button id="btnCarregar">Carregar usuarios</button>
+
+    <ul id="listarUsuarios"></ul>
+
+    <script>
+
+        const botao = document.getElementById("btnCarregar");
+        const lista = document.getElementById("listarUsuarios");
+
+        botao.addEventListener("click", async () =>{
+            try {
+                lista.innerHTML = "<li>Carregando...</li>";
+
+                const response = await fetch("https://dummyjson.com/users");
+             if(!response.ok){
+        throw new Error(`Erro na requisição: ${response.status}`);
+    }
+    
+        const dados = await response.json();
+
+        lista.innerHTML = "";
+        dados.users.forEach(usuario => {
+            const li = document.createElement("li");
+                li.textContent = `${usuario.firstName} ${usuario.lastName}`;
+                lista.appendChild(li); 
+        });
+
+    } 
+    catch (error){
+        lista.innerHTML = '<li class="erro"> Erro ao carregar dados. </li>';
+     console.error("Erro:", error);
+
+    }
+  });
+
+    </script>
+</body>
+</html>
